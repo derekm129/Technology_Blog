@@ -3,7 +3,7 @@ const sequelize = require('../config/connection.js');
 
 class Comment extends Model {};
 
-Category.init(
+Comment.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -11,10 +11,25 @@ Category.init(
         primaryKey: true,
         autoIncrement: true
       },
-      category_name: {
+      comment_body: {
         type: DataTypes.STRING,
-        allowNull: false
-      }
+      },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'user',
+            key: 'id',
+        }
+      },
+      post_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'post',
+            key: 'id',
+        }
+      },
     },
     {
       sequelize,
@@ -25,4 +40,4 @@ Category.init(
     }
   );
   
-  module.export = Comment;
+  module.exports = Comment;

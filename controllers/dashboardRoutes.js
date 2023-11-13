@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { BlogPost, Comment, User } = require('../models');
+const {Post, Comment, User } = require('../models');
 const withAuth = require('../utils/auth');
 const sequelize = require('../config/connection');
 
@@ -7,7 +7,7 @@ const sequelize = require('../config/connection');
 router.get('/dashboard', withAuth, async (req, res) => {
     try {
       // Get all posts and JOIN with user data
-      const blogPostData = await BlogPost.findAll({
+      const postData = await Post.findAll({
         where: {
             user_id: req.session.user_id,
         },
@@ -15,7 +15,7 @@ router.get('/dashboard', withAuth, async (req, res) => {
         include: [
           {
               model: Comment,
-              attributes: ['id', 'comment', 'postId', 'userId', 'created_at'],
+              attributes: ['id', 'comment', 'post_Id', 'user_Id', 'created_at'],
               include: {
                   model: User,
                   attributes: ['username'],
@@ -29,8 +29,8 @@ router.get('/dashboard', withAuth, async (req, res) => {
       });
   
       // Serialize data so the template can read it
-      const blogPosts = blogPostData.map((blogPost) => blogPost.get({ plain: true }));
-      res.render('dashboard', {blogPosts, logged_in: true});
+      const posts = postData.map((post) => post.get({ plain: true }));
+      res.render('dashboard', {posts, logged_in: true});
   
     } catch (err) {
       res.status(500).json(err);
@@ -40,12 +40,12 @@ router.get('/dashboard', withAuth, async (req, res) => {
 //   Edit a post
 router.get('/edit/:id', withAuth, async (req, res) => {
     try {
-        const blogPostData = await BlogPost.findByPk(req.params.id, {
+        const postData = await Post.findByPk(req.params.id, {
               attributes: ['id', 'title', 'content', 'created_at'],
             include: [
               {
                   model: Comment,
-                  attributes: ['id', 'comment', 'postId', 'userId', 'created_at'],
+                  attributes: ['id', 'comment', 'post_Id', 'user_Id', 'created_at'],
                   include: {
                       model: User,
                       attributes: ['username'],
@@ -58,13 +58,13 @@ router.get('/edit/:id', withAuth, async (req, res) => {
             ],
           });
         
-        if (!blogPostData) {
+        if (!postData) {
             res.status(404).json({message: 'No post found with this id'});
             return;
         }
-        const blogPost = blogPostData.map((blogPost) => blogPost.get({ plain: true }));
+        const post = postData.map((ost) => post.get({ plain: true }));
 
-        res.render('edit-post', {blogPost, logged_in: true});
+        res.render('edit-post', {post, logged_in: true});
     }
     catch (err) {
         res.status(500).json(err);
@@ -76,7 +76,7 @@ router.put('/edit/:id', withAuth, async (req, res) => {
     try {
         const {title, content} = req.body;
 
-        const updatedPost = await BlogPost.update(
+        const post = await Post.update(
             {title, content},
             {
                 where: {
@@ -85,7 +85,7 @@ router.put('/edit/:id', withAuth, async (req, res) => {
             }
         );
         
-        if (updatedPost[0] === 0) {
+        if (post[0] === 0) {
             res.status(404).json({message: 'No post found with this id'});
             return;
         }
