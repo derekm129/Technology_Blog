@@ -11,6 +11,14 @@ Post.init(
       primaryKey: true,
       autoIncrement: true
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+          model: 'user',
+          key: 'id'
+      },
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false
@@ -19,15 +27,8 @@ Post.init(
         type: DataTypes.STRING,
         allowNull: false, 
     },
-    user_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'user',
-            key: 'id',
-        }
-    },
-    created_at: {
-      type: DataTypes.DATE, 
+    date_created: {
+      type: DataTypes.DATE,  
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
@@ -38,7 +39,8 @@ Post.init(
     freezeTableName: true,
     underscored: true,
     modelName: 'post',
-  }
+  },
+
 );
 
 module.exports = Post;

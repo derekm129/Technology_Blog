@@ -8,11 +8,11 @@ router.get('/', async (req, res) => {
   try {
     // Get all posts and JOIN with user data
     const postData = await Post.findAll({
-        attributes: ['id', 'title', 'content', 'created_at'],
+        attributes: ['id', 'user_id', 'title', 'content', 'date_created'],
       include: [
         {
             model: Comment,
-            attributes: ['id', 'comment', 'postId', 'userId', 'created_at'],
+            attributes: ['id', 'user_id', 'post_Id', 'content', 'date_created'],
             include: {
                 model: User,
                 attributes: ['username'],
@@ -45,15 +45,15 @@ router.get('/post/:id', async (req, res) => {
       include: [
         {
             model: Comment,
-            attributes: ['id', 'comment', 'postId', 'userId', 'created_at'],
+            attributes: ['id', 'comment', 'postId', 'userId', 'date_created'],
             include: {
                 model: User,
-                attributes: ['username'],
+                attributes: ['name'],
             },
         },
         {
             model: User,
-            attributes: ['username'],
+            attributes: ['name'],
         },
       ],
     });

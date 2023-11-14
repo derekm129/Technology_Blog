@@ -11,11 +11,11 @@ router.get('/dashboard', withAuth, async (req, res) => {
         where: {
             user_id: req.session.user_id,
         },
-          attributes: ['id', 'title', 'content', 'created_at'],
+          attributes: ['id', 'user_id', 'title', 'content', 'date_created'],
         include: [
           {
               model: Comment,
-              attributes: ['id', 'comment', 'post_Id', 'user_Id', 'created_at'],
+              attributes: ['id', 'user_id', 'post_Id', 'content', 'date_created'],
               include: {
                   model: User,
                   attributes: ['username'],
@@ -41,11 +41,11 @@ router.get('/dashboard', withAuth, async (req, res) => {
 router.get('/edit/:id', withAuth, async (req, res) => {
     try {
         const postData = await Post.findByPk(req.params.id, {
-              attributes: ['id', 'title', 'content', 'created_at'],
+              attributes: ['id', 'user_id', 'title', 'content', 'date_created'],
             include: [
               {
                   model: Comment,
-                  attributes: ['id', 'comment', 'post_Id', 'user_Id', 'created_at'],
+                  attributes: ['id', 'user_id', 'post_Id', 'content', 'date_created'],
                   include: {
                       model: User,
                       attributes: ['username'],
