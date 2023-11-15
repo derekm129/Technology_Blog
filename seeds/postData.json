@@ -1,0 +1,8 @@
+[
+  {
+    "user_id": 1,
+    "title": "First Blog",
+    "content": "Lorem ipsum",
+    "date_created": "November 14, 2023"
+  }
+]
