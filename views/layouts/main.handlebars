@@ -13,21 +13,23 @@
             <nav>
             <!-- Conditionally render login or logout links -->
                 {{#if logged_in}}
-                <a href="/">Home</a>
-                <a href="/dashboard">Dashboard</a>
-                <button class="no-button" id="logout">Logout</button>
+                    <a href="/">Home</a>
+                    <a href="/dashboard">Dashboard</a>
+                    <button class="no-button" id="logout">Logout</button>
                 {{else}}
-                <a href="/login">Login</a>
+                    <a href="/">Home</a>
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/login">Login</a>
                 {{/if}}
-        </nav> 
+            </nav> 
         </header>
         <main>
             {{{body}}}
         </main>
     </div>    
 
-{{#if loggedIn}}
-<script src="/public/js/logout.js"></script>
-{{/if}}
+    {{#if loggedIn}}
+        <script src="/public/js/logout.js"></script>
+    {{/if}}
 </body>
 </html>
